@@ -1,0 +1,8 @@
+hayricos=input("si o no")
+DineroDisp=float(input("cuanto dinero tienes"))
+costocaramelo=float(input("cuanto cuesta el caramelo"))
+
+if hayricos.lower()=="si":
+    costogral=costocaramelo*30
+    gasto=DineroDisp/costogral
+print(gasto)
