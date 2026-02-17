@@ -1,9 +1,89 @@
-{% extends 'header.html' %} {% block content %} {% if request.user.is_authenticated %}
-<h2 class="text-center">Bienvenido {{ user.username | upper }}!</h2>
-{% else %}
-<h2 class="text-center">Bienvenido!</h2>
-{% endif %}
-<p class="text-center">
-    Mirá las imágenes desde <a href="{% url 'home' %}">este link.</a>
-</p>
+{% extends 'header.html' %}
+
+{% block content %}
+<style>
+    /* El fondo de corcho para mantener la estética de la galería */
+    body {
+        background-color: #8B5A2B !important;
+        background-image: radial-gradient(circle at 2px 2px, rgba(0,0,0,0.3) 1px, transparent 0) !important;
+        background-size: 30px 30px !important;
+        background-attachment: fixed;
+        min-height: 100vh;
+        margin: 0;
+    }
+
+    /* Contenedor principal con los marcos de madera laterales */
+    .main-container {
+        padding: 60px 15px;
+        border-left: 15px solid #5D4037;
+        border-right: 15px solid #5D4037;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: calc(100vh - 160px);
+    }
+
+    /* Estilo de la hoja de expediente */
+    .expediente {
+        background-color: #fdf5e6;
+        max-width: 650px;
+        width: 100%;
+        padding: 50px;
+        box-shadow: 15px 15px 30px rgba(0,0,0,0.5);
+        transform: rotate(-0.5deg); /* Leve inclinación para realismo */
+        position: relative;
+        font-family: 'Courier New', monospace; /* Fuente de máquina de escribir */
+        border: 1px solid #dcdcdc;
+    }
+
+    .sello-policial {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        border: 4px solid #c0392b;
+        color: #c0392b;
+        font-weight: bold;
+        padding: 8px;
+        transform: rotate(15deg);
+        font-family: 'Arial Black', sans-serif;
+        opacity: 0.6;
+    }
+</style>
+
+<div class="main-container">
+    <div class="expediente text-center">
+        <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); width: 25px; height: 25px; background: #c0392b; border-radius: 50%; box-shadow: 2px 2px 5px rgba(0,0,0,0.3);"></div>
+        
+        <div class="sello-policial">OFICIAL</div>
+
+        {% if request.user.is_authenticated %}
+            <h2 class="mb-4" style="color: #000; font-family: 'Arial Black', sans-serif;">
+                ¡BIENVENIDO {{ user.username | upper }}!
+            </h2>
+            <p class="lead" style="color: #2d1b15;">Acceso concedido al archivo de licencias de Springfield.</p>
+        {% else %}
+            <h2 class="mb-4" style="color: #000; font-family: 'Arial Black', sans-serif;">
+                ¡BIENVENIDO!
+            </h2>
+            <p class="lead" style="color: #2d1b15;">Inicie sesión para gestionar los registros oficiales.</p>
+        {% endif %}
+
+        <hr style="border-color: #2d1b15; border-width: 2px; margin: 30px 0;">
+
+        <p style="font-size: 1.1rem; color: #2d1b15;">
+            Mirá las imágenes desde 
+            <a href="{% url 'home' %}" style="color: #2989d8; font-weight: bold; text-decoration: none; border-bottom: 2px solid #2989d8;">
+                este link.
+            </a>
+        </p>
+
+        {% if not request.user.is_authenticated %}
+            <div class="mt-4">
+                <a href="{% url 'login' %}" class="btn shadow-sm" style="background-color: #45B1E8; color: white; font-family: 'Arial Black'; padding: 12px 35px; border-radius: 5px; text-decoration: none; display: inline-block; border: 2px solid #3E2723;">
+                    INGRESAR AL SISTEMA
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}

@@ -1,6 +1,8 @@
 # capa de vista/presentación
 
 from django.shortcuts import redirect, render
+
+from app.models import Favourite
 from .layers.services import services
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
@@ -18,10 +20,13 @@ def home(request):
     y también el listado de favoritos del usuario, para luego enviarlo al template 'home.html'.
     Recordar que los listados deben pasarse en el contexto con las claves 'images' y 'favourite_list'.
     """
-    images = services.getAllImages()
     favourite_list = []
-
-    return render(request, 'home.html', { 'images': images,'layout': 'horizontal', 'favourite_list': favourite_list })
+    
+    if request.user.is_authenticated:
+    
+        favourite_list = Favourite.objects.filter(user=request.user)
+    
+    return render(request, 'home.html', {'images': services.getAllImages(),'favourite_list': favourite_list})
 
 def search(request):
     """
@@ -50,13 +55,23 @@ def filter_by_status(request):
     Se debe obtener el parámetro 'status' desde el POST, filtrar las imágenes según ese estado
     y renderizar 'home.html' con los resultados. Si no hay estado, redirigir a 'home'.
     """
-    status = request.POST.get('status', '')
-    if not status:
-        return redirect('home')
+    status = request.POST.get('status')
+
+    # 2. Traemos TODOS los personajes de la API
+    # Usamos la función original sin parámetros para que no dé error de argumentos
+    images = services.getAllImages()
+    personajes_filtrados = []
     
-    images = services.filterByStatus(status) 
-    favourite_list = services.getAllFavourites(request)
-    return render(request, 'home.html', { 'images': images, 'favourite_list': favourite_list })
+    for personaje in images:
+
+        if personaje.status.lower() == status.lower():
+            personajes_filtrados.append(personaje)
+
+    favourite_list = []
+    if request.user.is_authenticated:
+        favourite_list = Favourite.objects.filter(user=request.user)
+
+    return render(request, 'home.html', {'images': personajes_filtrados, 'favourite_list': favourite_list})
 
 # Estas funciones se usan cuando el usuario está logueado en la aplicación.
 @login_required
@@ -64,15 +79,15 @@ def getAllFavouritesByUser(request):
     """
     Obtiene todos los favoritos del usuario autenticado.
     """
-    favourite_list = services.getAllFavourites(request)
-    return render(request, 'home.html', { 'images': services.getAllImages(), 'favourite_list': favourite_list })
+    favourite_list = Favourite.objects.filter(user=request.user)
+    return render(request, 'favourites.html', { 'favourite_list': favourite_list })
 
 @login_required
 def saveFavourite(request):
     """
     Guarda un personaje como favorito.
     """
-    services.saveFavourite(request)
+    services.saveFavourite(request) 
     return redirect('home')
 ## se usa el redirect para no tener que recargar la pagina y asi poder ver el personaje agregado
 

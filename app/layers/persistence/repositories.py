@@ -1,6 +1,13 @@
 # capa DAO de acceso/persistencia de datos.
 from app.models import Favourite
 
+def getFavouriteByUserAndName(user, name):
+    """
+    Verifica si un favorito con el mismo nombre ya existe para el usuario.
+    Retorna el favorito si existe, o None si no existe.
+    """
+    return Favourite.objects.filter(user=user, name=name).first()
+
 def saveFavourite(fav):
     fav = Favourite.objects.create(
         name=fav.name,
@@ -18,7 +25,8 @@ def getAllFavourites(user):
     """
     Obtiene todos los favoritos de un usuario desde la base de datos.
     """
-    pass
+    favourities = Favourite.objects.filter(user=user)
+    return favourities
 
 def deleteFavourite(favId):
     favourite = Favourite.objects.get(id=favId)

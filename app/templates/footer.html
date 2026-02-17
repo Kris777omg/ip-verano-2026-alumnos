@@ -1,9 +1,20 @@
-<footer class="bg-body-tertiary text-center text-lg-start fixed-bottom">
-    <div class="text-center p-3" style="display: flex;background-color: rgb(255 255 255 / 78%);justify-content: space-between;">
-        <strong>Introducción a la Programación | UNGS</strong>
-        <strong>{{VERSION}}</strong>
+<footer class="py-4 mt-auto shadow-lg" style="background-color: #3E2723; border-top: 8px solid #5D4037; color: #D7CCC8; border-bottom: 5px solid #2D1B15;">
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-12">
+                <p class="mb-0 fw-bold" style="font-family: 'Arial Black', sans-serif; letter-spacing: 1px; text-shadow: 1px 1px 0px #000;">
+                    &copy; 2026 DEPARTAMENTO DE POLICÍA DE SPRINGFIELD - TP IP COM-VERANO - TODOS LOS DERECHOS RESERVADOS
+                </p>
+                <small class="text-uppercase" style="font-size: 0.65rem; color: #a1887f; letter-spacing: 1px;">
+                    Propiedad del Jefe Gorgory. Prohibido el paso a civiles.
+                </small>
+            </div>
+
+            {% if user.is_staff %}
+            <div class="col-12 mt-2">
+                <span class="badge bg-warning text-dark">Acceso de Administrador Habilitado</span>
+            </div>
+            {% endif %}
+            </div>
     </div>
 </footer>
-</body>
-
-</html>

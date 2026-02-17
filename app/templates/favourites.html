@@ -1,47 +1,95 @@
 {% extends 'header.html' %} {% block content %}
-<div class="container-xl">
-    <div class="table-responsive">
-        <div class="table-wrapper">
-            <div class="table-title">
-                <div class="row">
-                    <div class="col-sm-8">
-                        <h2>Listado de <strong>FAVORITOS</strong></h2>
+<style>
+    body {
+        background-color: #8B5A2B !important; 
+        background-image: radial-gradient(circle at 2px 2px, rgba(0,0,0,0.3) 1px, transparent 0) !important;
+        background-size: 30px 30px !important;
+        background-attachment: fixed;
+        min-height: 100vh;
+        margin: 0;
+    }
+
+    .main-container { padding: 40px 15px; }
+
+    .page-title { 
+        font-family: 'Arial Black', sans-serif; 
+        color: #000000 !important; 
+        text-shadow: 1px 1px 2px rgba(255,255,255,0.3);
+    }
+
+    .licencia-fav {
+        width: 100%;
+        max-width: 420px;
+        border-radius: 12px !important;
+        background-color: white !important;
+        font-family: 'Arial Black', sans-serif;
+        box-shadow: 8px 8px 15px rgba(0,0,0,0.5) !important;
+    }
+</style>
+
+<div class="main-container">
+    <h1 class="text-center page-title mb-5 text-uppercase">Listado de Favoritos ⭐</h1>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        
+        {% if favourite_list %}
+            {% for favourite in favourite_list %}
+            <div class="col d-flex justify-content-center">
+                
+                <div class="card h-100 licencia-fav border-4 
+                    {% if 'alive' in favourite.status|lower %} border-success 
+                    {% elif 'deceased' in favourite.status|lower %} border-secondary 
+                    {% else %} border-warning {% endif %}">
+                    
+                    <div class="px-3 py-1 text-center" style="background: linear-gradient(to bottom, #7db9e8 0%,#2989d8 100%); color: #004a80; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom: 3px solid #FFD900;">
+                        <h4 class="mb-0 fw-bold">SPRINGFIELD</h4>
+                        <small class="fw-bold text-dark" style="font-size: 0.6rem; letter-spacing: 3px;">DRIVER LICENSE</small>
                     </div>
-                </div>
+
+                    <div class="card-body p-2">
+                        <div class="row g-0 align-items-center">
+                            <div class="col-5">
+                                <div class="border border-dark bg-white p-1">
+                                    <img src="{{ favourite.image }}" class="img-fluid" style="width: 100%; height: 130px; object-fit: cover; border: 1px solid #000;">
+                                </div>
+                                <p class="text-success fw-bold mt-1 mb-0" style="font-size: 0.6rem; font-family: monospace;">ID: #{{ favourite.id }}</p>
+                            </div>
+
+                            <div class="col-7 ps-3 text-uppercase" style="font-size: 0.7rem;">
+                                <p class="mb-1"><strong class="text-muted" style="font-size: 0.55rem;">NAME:</strong><br>{{ favourite.name }}</p>
+                                
+                                <p class="mb-1"><strong class="text-muted" style="font-size: 0.55rem;">OCCUPATION:</strong><br>{{ favourite.occupation }}</p>
+                                
+                                <div class="row g-0 border-top pt-1 mt-1">
+                                    <div class="col-6">
+                                        <small class="text-muted d-block" style="font-size: 0.5rem;">STATUS</small>
+                                        <strong class="{% if 'alive' in favourite.status|lower %}text-success{% else %}text-secondary{% endif %}">
+                                            {{ favourite.status }}
+                                        </strong>
+                                    </div>
+                                    <div class="col-6">
+                                        <small class="text-muted d-block" style="font-size: 0.5rem;">GENDER</small>
+                                        <strong>{{ favourite.gender }}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer bg-transparent border-0 pb-3">
+                        <form method="post" action="{% url 'borrar-favorito' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="id" value="{{ favourite.id }}">
+                            <button type="submit" class="btn btn-danger btn-sm w-100 fw-bold" style="border-radius: 0;">
+                                REVOCAR LICENCIA 🗑️
+                            </button>
+                        </form>
+                    </div>
+                </div> </div> {% endfor %}
+        {% else %}
+            <div class="col-12 text-center mt-5">
+                <h3 class="text-white">Aún no has guardado licencias en tus favoritos.</h3>
             </div>
-            <table class="table table-striped table-hover table-bordered">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Imagen</th>
-                        <th>Nombre</th>
-                        <th>Género <i class="fa fa-sort"></i></th>
-                        <th>Estado</th>
-                        <th>Ocupación <i class="fa fa-sort"></i></th>
-                        <th>Acciones </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for favourite in favourite_list %}
-                    <tr>
-                        <td>-</td>
-                        <td><img src="{{ favourite.image }}" alt="" style="max-width: 200px; max-height: 200px;"></td>
-                        <td>{{ favourite.name }}</td>
-                        <td>{{ favourite.gender }}</td>
-                        <td>{{ favourite.status }}</td>
-                        <td>{{ favourite.occupation }}</td>
-                        <td>
-                            <form method="post" action="{% url 'borrar-favorito' %}">
-                                {% csrf_token %}
-                                <input type="hidden" name="id" value="{{ favourite.id }}">
-                                <button type="submit" class="btn" style="color:red"><i class="material-icons">&#xE872;</i></button>
-                            </form>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-{% endblock %}
+        {% endif %}
+
+    </div> </div> {% endblock %}

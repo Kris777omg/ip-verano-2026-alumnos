@@ -1,17 +1,107 @@
 {% extends 'header.html' %} {% block content %}
-<div class="login-form" style="text-align: center;">
-    <form action="" method="POST" style="display: inline-block;">
-        {% csrf_token %}
-        <h2 class="text-center">Inicio de sesión</h2>
-        <div class="form-group" style="margin-bottom: 5%;">
-            <input type="text" name="username" id="username" class="form-control" placeholder="Usuario" required="required">
+<style>
+    
+    body {
+        background-color: #8B5A2B !important;
+        background-image: radial-gradient(circle at 2px 2px, rgba(0,0,0,0.3) 1px, transparent 0) !important;
+        background-size: 30px 30px !important;
+        background-attachment: fixed;
+        min-height: 100vh;
+    }
+
+    .main-login-container {
+        padding: 60px 15px;
+        border-left: 15px solid #5D4037;
+        border-right: 15px solid #5D4037;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 85vh;
+    }
+
+    
+    .login-form-card {
+        background-color: #fdf5e6;
+        max-width: 400px;
+        width: 100%;
+        padding: 40px;
+        box-shadow: 15px 15px 30px rgba(0,0,0,0.5);
+        border: 1px solid #dcdcdc;
+        position: relative;
+        font-family: 'Courier New', monospace;
+        transform: rotate(0.5deg);
+    }
+
+    .login-header {
+        font-family: 'Arial Black', sans-serif;
+        color: #000;
+        border-bottom: 3px solid #000;
+        padding-bottom: 10px;
+        margin-bottom: 30px;
+        text-transform: uppercase;
+    }
+
+    
+    .form-control-simpson {
+        background-color: transparent !important;
+        border: none !important;
+        border-bottom: 2px solid #2d1b15 !important;
+        border-radius: 0 !important;
+        padding: 10px 5px !important;
+        font-weight: bold;
+        color: #000;
+    }
+
+    .form-control-simpson:focus {
+        box-shadow: none !important;
+        border-bottom-color: #45B1E8 !important;
+    }
+
+    .btn-ingresar-oficial {
+        background-color: #45B1E8;
+        color: white;
+        font-family: 'Arial Black', sans-serif;
+        border: 2px solid #3E2723;
+        width: 100%;
+        padding: 12px;
+        margin-top: 20px;
+        transition: 0.3s;
+    }
+
+    .btn-ingresar-oficial:hover {
+        background-color: #2989d8;
+        transform: scale(1.02);
+    }
+</style>
+
+<div class="main-login-container">
+    <div class="login-form-card text-center">
+        <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); width: 25px; height: 25px; background: #c0392b; border-radius: 50%; box-shadow: 2px 2px 5px rgba(0,0,0,0.3);"></div>
+        
+        <h2 class="login-header">Inicio de sesión</h2>
+        <p class="small fw-bold mb-4">DEPARTAMENTO DE POLICÍA DE SPRINGFIELD</p>
+
+        <form action="" method="POST" style="display: inline-block; width: 100%;">
+            {% csrf_token %}
+            
+            <div class="form-group text-start" style="margin-bottom: 20px;">
+                <label class="small fw-bold">USUARIO:</label>
+                <input type="text" name="username" id="username" class="form-control-simpson w-100" placeholder="Nombre de oficial" required="required">
+            </div>
+
+            <div class="form-group text-start" style="margin-bottom: 30px;">
+                <label class="small fw-bold">CONTRASEÑA:</label>
+                <input type="password" name="password" id="password" class="form-control-simpson w-100" placeholder="Clave secreta" required="required">
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-ingresar-oficial shadow">INGRESAR 🔑</button>
+            </div>
+        </form>
+
+        <div class="mt-4">
+            <a href="{% url 'home' %}" style="color: #5D4037; font-size: 0.8rem; text-decoration: none; font-weight: bold;">← VOLVER AL ARCHIVO</a>
         </div>
-        <div class="form-group" style="margin-bottom: 5%;">
-            <input type="password" name="password" id="password" class="form-control" placeholder="Contraseña" required="required">
-        </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
-        </div>
-    </form>
+    </div>
 </div>
 {% endblock %}
