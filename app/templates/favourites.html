@@ -1,4 +1,6 @@
-{% extends 'header.html' %} {% block content %}
+{% extends 'header.html' %} 
+
+{% block content %}
 <style>
     body {
         background-color: #8B5A2B !important; 
@@ -30,66 +32,75 @@
 <div class="main-container">
     <h1 class="text-center page-title mb-5 text-uppercase">Listado de Favoritos ⭐</h1>
 
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        
-        {% if favourite_list %}
-            {% for favourite in favourite_list %}
-            <div class="col d-flex justify-content-center">
-                
-                <div class="card h-100 licencia-fav border-4 
-                    {% if 'alive' in favourite.status|lower %} border-success 
-                    {% elif 'deceased' in favourite.status|lower %} border-secondary 
-                    {% else %} border-warning {% endif %}">
+    <div class="container-fluid">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            
+            {% if favourite_list %}
+                {% for favourite in favourite_list %}
+                <div class="col d-flex justify-content-center">
                     
-                    <div class="px-3 py-1 text-center" style="background: linear-gradient(to bottom, #7db9e8 0%,#2989d8 100%); color: #004a80; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom: 3px solid #FFD900;">
-                        <h4 class="mb-0 fw-bold">SPRINGFIELD</h4>
-                        <small class="fw-bold text-dark" style="font-size: 0.6rem; letter-spacing: 3px;">DRIVER LICENSE</small>
-                    </div>
+                    <div class="card h-100 licencia-fav border-4 
+                        {% if 'alive' in favourite.status|lower %} border-success 
+                        {% elif 'deceased' in favourite.status|lower %} border-secondary 
+                        {% else %} border-warning {% endif %}">
+                        
+                        <div class="px-3 py-1 text-center" style="background: linear-gradient(to bottom, #7db9e8 0%,#2989d8 100%); color: #004a80; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom: 3px solid #FFD900;">
+                            <h4 class="mb-0 fw-bold">SPRINGFIELD</h4>
+                            <small class="fw-bold text-dark" style="font-size: 0.6rem; letter-spacing: 3px;">DRIVER LICENSE</small>
+                        </div>
 
-                    <div class="card-body p-2">
-                        <div class="row g-0 align-items-center">
-                            <div class="col-5">
-                                <div class="border border-dark bg-white p-1">
-                                    <img src="{{ favourite.image }}" class="img-fluid" style="width: 100%; height: 130px; object-fit: cover; border: 1px solid #000;">
-                                </div>
-                                <p class="text-success fw-bold mt-1 mb-0" style="font-size: 0.6rem; font-family: monospace;">ID: #{{ favourite.id }}</p>
-                            </div>
-
-                            <div class="col-7 ps-3 text-uppercase" style="font-size: 0.7rem;">
-                                <p class="mb-1"><strong class="text-muted" style="font-size: 0.55rem;">NAME:</strong><br>{{ favourite.name }}</p>
-                                
-                                <p class="mb-1"><strong class="text-muted" style="font-size: 0.55rem;">OCCUPATION:</strong><br>{{ favourite.occupation }}</p>
-                                
-                                <div class="row g-0 border-top pt-1 mt-1">
-                                    <div class="col-6">
-                                        <small class="text-muted d-block" style="font-size: 0.5rem;">STATUS</small>
-                                        <strong class="{% if 'alive' in favourite.status|lower %}text-success{% else %}text-secondary{% endif %}">
-                                            {{ favourite.status }}
-                                        </strong>
+                        <div class="card-body p-2">
+                            <div class="row g-0 align-items-center">
+                                <div class="col-5">
+                                    <div class="border border-dark bg-white p-1">
+                                        <img src="{{ favourite.image }}" class="img-fluid" style="width: 100%; height: 130px; object-fit: cover; border: 1px solid #000;">
                                     </div>
-                                    <div class="col-6">
-                                        <small class="text-muted d-block" style="font-size: 0.5rem;">GENDER</small>
-                                        <strong>{{ favourite.gender }}</strong>
+                                    <p class="text-success fw-bold mt-1 mb-0" style="font-size: 0.6rem; font-family: monospace;">ID: #{{ favourite.id }}</p>
+                                </div>
+
+                                <div class="col-7 ps-3 text-uppercase" style="font-size: 0.7rem;">
+                                    <p class="mb-1"><strong class="text-muted" style="font-size: 0.55rem;">NAME:</strong><br>{{ favourite.name }}</p>
+                                    
+                                    <p class="mb-1"><strong class="text-muted" style="font-size: 0.55rem;">OCCUPATION:</strong><br>{{ favourite.occupation }}</p>
+                                    
+                                    <div class="row g-0 border-top pt-1 mt-1">
+                                        <div class="col-4">
+                                            <small class="text-muted d-block" style="font-size: 0.45rem;">STATUS</small>
+                                            <strong class="{% if 'alive' in favourite.status|lower %}text-success{% else %}text-secondary{% endif %}" style="font-size: 0.6rem;">
+                                                {{ favourite.status }}
+                                            </strong>
+                                        </div>
+                                        <div class="col-4 border-start ps-1">
+                                            <small class="text-muted d-block" style="font-size: 0.45rem;">GENDER</small>
+                                            <strong style="font-size: 0.6rem;">{{ favourite.gender }}</strong>
+                                        </div>
+                                        <div class="col-4 border-start ps-1">
+                                            <small class="text-muted d-block" style="font-size: 0.45rem;">AGE</small>
+                                            <strong style="font-size: 0.6rem;">{{ favourite.age}}</strong>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="card-footer bg-transparent border-0 pb-3">
-                        <form method="post" action="{% url 'borrar-favorito' %}">
-                            {% csrf_token %}
-                            <input type="hidden" name="id" value="{{ favourite.id }}">
-                            <button type="submit" class="btn btn-danger btn-sm w-100 fw-bold" style="border-radius: 0;">
-                                REVOCAR LICENCIA 🗑️
-                            </button>
-                        </form>
-                    </div>
-                </div> </div> {% endfor %}
-        {% else %}
-            <div class="col-12 text-center mt-5">
-                <h3 class="text-white">Aún no has guardado licencias en tus favoritos.</h3>
-            </div>
-        {% endif %}
-
-    </div> </div> {% endblock %}
+                        <div class="card-footer bg-transparent border-0 pb-3">
+                            <form method="post" action="{% url 'borrar-favorito' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="id" value="{{ favourite.id }}">
+                                <button type="submit" class="btn btn-danger btn-sm w-100 fw-bold" style="border-radius: 0;">
+                                    REVOCAR LICENCIA 🗑️
+                                </button>
+                            </form>
+                        </div>
+                    </div> 
+                </div> 
+                {% endfor %}
+            {% else %}
+                <div class="col-12 text-center mt-5">
+                    <h3 class="text-white">Aún no has guardado licencias en tus favoritos.</h3>
+                </div>
+            {% endif %}
+        </div> 
+    </div> 
+</div> 
+{% endblock %}

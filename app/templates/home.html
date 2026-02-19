@@ -42,7 +42,8 @@
         </form>
         <form method="POST" action="{% url 'filter_by_status' %}">
             {% csrf_token %}
-            <input type="hidden" name="status" value="Deceased"> <button type="submit" class="btn btn-secondary">Fallecidos</button>
+            <input type="hidden" name="status" value="Deceased"> 
+            <button type="submit" class="btn btn-secondary">Fallecidos</button>
         </form>
     </div>
 
@@ -50,7 +51,7 @@
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-4">
             {% if images|length == 0 %}
                 <div class="col-12">
-                    <h2 class="text-center">La búsqueda no arrojó resultados...</h2>
+                    <h2 class="text-center text-white">La búsqueda no arrojó resultados...</h2>
                 </div>
             {% else %}
                 {% for img in images %}
@@ -84,15 +85,19 @@
                                     <p class="mb-1"><strong class="text-muted" style="font-size: 0.55rem;">OCCUPATION:</strong><br>{{ img.occupation }}</p>
                                     
                                     <div class="row g-0 border-top pt-1 mt-1">
-                                        <div class="col-6">
-                                            <small class="text-muted d-block" style="font-size: 0.5rem;">STATUS</small>
-                                            <strong class="{% if 'alive' in img.status|lower %}text-success{% else %}text-secondary{% endif %}">
+                                        <div class="col-4">
+                                            <small class="text-muted d-block" style="font-size: 0.45rem;">STATUS</small>
+                                            <strong class="{% if 'alive' in img.status|lower %}text-success{% else %}text-secondary{% endif %}" style="font-size: 0.6rem;">
                                                 {{ img.status }}
                                             </strong>
                                         </div>
-                                        <div class="col-6">
-                                            <small class="text-muted d-block" style="font-size: 0.5rem;">GENDER</small>
-                                            <strong>{{ img.gender }}</strong>
+                                        <div class="col-4 border-start ps-1">
+                                            <small class="text-muted d-block" style="font-size: 0.45rem;">GENDER</small>
+                                            <strong style="font-size: 0.6rem;">{{ img.gender }}</strong>
+                                        </div>
+                                        <div class="col-4 border-start ps-1">
+                                            <small class="text-muted d-block" style="font-size: 0.45rem;">AGE</small>
+                                            <strong style="font-size: 0.6rem;">{{ img.age|default:"38" }}</strong>
                                         </div>
                                     </div>
                                 </div>
@@ -108,6 +113,7 @@
                                 <input type="hidden" name="image" value="{{ img.image }}">
                                 <input type="hidden" name="gender" value="{{ img.gender }}">
                                 <input type="hidden" name="occupation" value="{{ img.occupation }}">
+                                <input type="hidden" name="age" value="{{ img.age|default:'38' }}">
                                 
                                 <button type="submit" class="btn btn-sm w-100 fw-bold {% if 'alive' in img.status|lower %} btn-outline-success {% else %} btn-outline-secondary {% endif %}" style="border-radius: 0; border: 2px solid; text-transform: uppercase;">
                                     REVALIDAR LICENCIA ⭐
@@ -115,6 +121,5 @@
                             </form>
                             {% endif %}
                         </div>
-                    </div> </div> {% endfor %}
-            {% endif %}
+                    </div> </div> {% endfor %} {% endif %}
         </div> </div> </div> {% endblock %}
